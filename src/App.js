@@ -27,13 +27,13 @@ function App() {
   // };
 
 
-  useEffect(() => {
-    // dispatch(turnOnLoader());
-    // // Perform some asynchronous task
-    // setTimeout(() => {
-    //   dispatch(turnOffLoader());
-    // }, 2000);
-  });
+  // useEffect(() => {
+  //   // dispatch(turnOnLoader());
+  //   // // Perform some asynchronous task
+  //   // setTimeout(() => {
+  //   //   dispatch(turnOffLoader());
+  //   // }, 2000);
+  // });
   // useEffect(() => {
   //   setLoader(false)
   // } , [Loader]);

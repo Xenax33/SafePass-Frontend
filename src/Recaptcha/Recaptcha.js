@@ -3,12 +3,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 function Recaptcha({captchaVerified, setCaptchaVerified}) {
 
-  useEffect(() => {
-    console.log(captchaVerified)
-  });
+  // useEffect(() => {
+  //   console.log(captchaVerified)
+  // });
 
   function onChange(value) {
-    console.log("Captcha value:", value);
+    // console.log("Captcha value:", value);
     if (value !== null) {
       setCaptchaVerified(!captchaVerified);
     } else {

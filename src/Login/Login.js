@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import "./Login.css";
 import Nav from "../Landing Page/Nav";
 import { Link } from "react-router-dom";
 import Recaptcha from "../Recaptcha/Recaptcha";
 import { useDispatch } from "react-redux";
-import { turnOnLoader, turnOffLoader } from "../redux/loader";
+import { turnOnLoader, turnOffLoader  } from "../redux/loader";
 
 function Login() {
   const dispatch = useDispatch();
   const [captchaVerified, setCaptchaVerified] = useState(true);
+  const [User , setUser] = useState ({
+    name: "",
+    email: "",
+    password : ""
+  })
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=').map(part => part.trim());
+      if (cookieName === name) {
+        // Decode the URL-encoded value
+        const decodedValue = decodeURIComponent(cookieValue);
+        // Parse the JSON string into a JavaScript object
+        return JSON.parse(decodedValue);
+      }
+    }
+    return null;
+  }
+  
+
+  useEffect(() => {
+    // Load user data from cookie when component mounts
+    const userData = getCookie("user");
+    setUser(userData)
+  }, []);
+  useEffect(() => {
+    console.log(User)
+  }, [User]);
 
   const Login = () => {
     dispatch(turnOnLoader());
