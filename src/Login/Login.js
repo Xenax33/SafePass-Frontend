@@ -3,9 +3,20 @@ import "./Login.css";
 import Nav from "../Landing Page/Nav";
 import { Link } from "react-router-dom";
 import Recaptcha from "../Recaptcha/Recaptcha";
+import { useDispatch } from "react-redux";
+import { turnOnLoader, turnOffLoader } from "../redux/loader";
 
 function Login() {
+  const dispatch = useDispatch();
   const [captchaVerified, setCaptchaVerified] = useState(true);
+
+  const Login = () => {
+    dispatch(turnOnLoader());
+    // Perform some asynchronous task
+    setTimeout(() => {
+      dispatch(turnOffLoader());
+    }, 2000);
+  };
 
   return (
     <>
@@ -16,7 +27,7 @@ function Login() {
         <div className="SignUp">
           <div className="SignUpLeft">
             <h1 style={{ textAlign: "center" }}>Welcome Back</h1>
-            <img src="LogIn.svg" height={500} />
+            <img src="LogIn.svg" height={500} alt="error" />
           </div>
           <div className="form">
             <h2>Sign In</h2>
@@ -39,11 +50,15 @@ function Login() {
               <div className="highlight"></div>
             </div>
             <p>Forgot Password?</p>
-            <Recaptcha  captchaVerified= {captchaVerified} setCaptchaVerified= {setCaptchaVerified} />
+            <Recaptcha
+              captchaVerified={captchaVerified}
+              setCaptchaVerified={setCaptchaVerified}
+            />
             <button
               className="button1"
               style={{ borderRadius: "6px" }}
               disabled={captchaVerified}
+              onClick={Login}
             >
               Log In
             </button>

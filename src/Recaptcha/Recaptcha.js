@@ -3,11 +3,9 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 function Recaptcha({captchaVerified, setCaptchaVerified}) {
 
-
   useEffect(() => {
     console.log(captchaVerified)
   });
-  const key = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
 
   function onChange(value) {
     console.log("Captcha value:", value);
@@ -18,7 +16,7 @@ function Recaptcha({captchaVerified, setCaptchaVerified}) {
     }
   }
 
-  return <ReCAPTCHA sitekey={key} onChange={onChange} />;
+  return <ReCAPTCHA sitekey={process.env.REACT_APP_RECAPTCHAKEY} onChange={onChange} />;
 }
 
 export default Recaptcha;

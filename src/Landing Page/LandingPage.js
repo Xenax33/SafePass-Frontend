@@ -9,7 +9,7 @@ function LandingPage() {
       <div className="Content">
         <div id="Section1">
           <div className="Section1Contents">
-            <img src="Section1.svg" height={`400px`} width={`400px`} />
+            <img src="Section1.svg" height={`400px`} width={`400px`} alt="error"/>
             <div className="Section1Text rightAnimation">
               <h1>Keep your passwords</h1>
               <h1>at one place</h1>
@@ -25,7 +25,7 @@ function LandingPage() {
                 100% security of your <br /> imporant information.
               </h1>
             </div>
-            <img src="Section2.svg" height={`400px`} width={`400px`} />
+            <img src="Section2.svg" height={`400px`} width={`400px`} alt="error"/>
           </div>
         </div>
         <div id="Section3">
@@ -38,10 +38,10 @@ function LandingPage() {
             </p>
             <div className="Section3Cards">
               <div className="Section3Card">
-                <img className="CardImage" src="Saad.png" />
+                <img className="CardImage" src="Saad.png" alt="error"/>
                 <div className="CardText">
                   Khawaja Saad Akbar
-                  <a href="https://github.com/Xenax33" target="_blank">
+                  <a href="https://github.com/Xenax33" target="_blank" rel="noreferrer">
                   <button className="btn">
                     Github Profile
                     {/* <img src="RightArrow.svg" /> */}
@@ -50,10 +50,10 @@ function LandingPage() {
                 </div>
               </div>
               <div className="Section3Card">
-                <img className="CardImage" src="Bakar.jpeg" />
+                <img className="CardImage" src="Bakar.jpeg" alt="error"/>
                 <div className="CardText">
                   Abu Bakar Siddique
-                  <a href="https://github.com/AbubakarFarooqi" target="_blank">
+                  <a href="https://github.com/AbubakarFarooqi" target="_blank" rel="noreferrer">
                   <button className="btn">
                     Github Profile
                     {/* <img src="RightArrow.svg" /> */}
@@ -62,10 +62,10 @@ function LandingPage() {
                 </div>
               </div>
               <div className="Section3Card">
-                <img className="CardImage" src="Mazher.jpeg" />
+                <img className="CardImage" src="Mazher.jpeg" alt="error" />
                 <div className="CardText">
                   Abdullah Mazher
-                  <a href="https://github.com/AbdullahMazher1" target="_blank">
+                  <a href="https://github.com/AbdullahMazher1" target="_blank" rel="noreferrer">
                   <button className="btn">
                     Github Profile
                     {/* <img src="RightArrow.svg" /> */}

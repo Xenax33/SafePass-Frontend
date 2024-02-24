@@ -11,8 +11,8 @@ function Nav() {
     <nav>
       <div id="navbar">
         <div className="logo" onClick={onLogoClick}>
-            <img src="logo.svg" height={50} width={50} alt="" />
-            <img src="logotext.svg" width={100} alt="" />
+            <img src="logo.svg" height={50} width={50} alt="error" />
+            <img src="logotext.svg" width={100} alt="error" />
         </div>
         <div className="navlist">
           <ul>
