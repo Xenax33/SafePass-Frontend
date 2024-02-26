@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect , useState } from "react";
+import { BrowserRouter, Routes, Route  } from "react-router-dom";
 import LandingPage from "./Landing Page/LandingPage";
 import SignUp from "./Login/SignUp";
 import Login from "./Login/Login";
@@ -8,9 +8,21 @@ import Login from "./Login/Login";
 import Spinner from "./Spinner/Spinner";
 import Error404 from "./404 Page/Error404";
 import { useSelector } from "react-redux";
+import SessionTimeout from "./Modals/SessionTimeout";
 
 function App() {
   const isLoading = useSelector((state) => state.loader);
+
+  
+  useEffect(() => {
+    // dispatch(turnOnLoader());
+    // // Perform some asynchronous task
+    // setTimeout(() => {
+    //   dispatch(turnOffLoader());
+    // }, 2000);
+  });
+
+
 
   // const getLocation = async () => {
   //   try {
@@ -27,16 +39,6 @@ function App() {
   // };
 
 
-  // useEffect(() => {
-  //   // dispatch(turnOnLoader());
-  //   // // Perform some asynchronous task
-  //   // setTimeout(() => {
-  //   //   dispatch(turnOffLoader());
-  //   // }, 2000);
-  // });
-  // useEffect(() => {
-  //   setLoader(false)
-  // } , [Loader]);
 
   return (
     <>
