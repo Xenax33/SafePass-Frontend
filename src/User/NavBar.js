@@ -31,7 +31,6 @@ function NavBar() {
     <>
       <nav>
         {showModal && <AddPassword onClose={handleCloseModal} />}
-        {showModal2 && <GeneratePassword onClose={handleCloseModal} />}
         <div id="navbar">
           <div className="logo" onClick={onLogoClick}>
             <img src="logo.svg" height={50} width={50} alt="error" />
