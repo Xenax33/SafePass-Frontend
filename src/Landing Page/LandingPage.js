@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Nav from "./Nav";
 import Footer from "../Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
-import NavBar from "../User/NavBar";
 
 
 function LandingPage() {
@@ -42,7 +41,7 @@ function LandingPage() {
 
   return (
     <>
-      <NavBar />
+      <Nav />
       <div className="Content">
         <div id="Section1">
           <div className="Section1Contents">

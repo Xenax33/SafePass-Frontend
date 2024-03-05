@@ -8,8 +8,9 @@ import Login from "./Login/Login";
 import Spinner from "./Spinner/Spinner";
 import Error404 from "./404 Page/Error404";
 import { useSelector } from "react-redux";
-import SessionTimeout from "./Modals/SessionTimeout";
-import GeneratePassword from "./User/Modals/GeneratePassword";
+import MainScreen from "./User/MainScreen";
+import GeneratePassword from "./User/GeneratePassword";
+import Landing from "./User/Landing";
 
 function App() {
   const isLoading = useSelector((state) => state.loader);
@@ -46,8 +47,12 @@ function App() {
       {isLoading && <Spinner />}
       <BrowserRouter>
         <Routes>
-          {/* <Route index path="/" element={<LandingPage />} /> */}
-          <Route index path="/" element={<GeneratePassword />} />
+          <Route index path="/" element={<LandingPage />} />
+          {/* <Route index path="/" element={<GeneratePassword />} /> */}
+          <Route  path="/user" element={<MainScreen />}>
+            <Route index path="generatepassword" element={<GeneratePassword />} />
+            <Route index path="landing" element={<Landing />} />
+          </Route>
           <Route index path="/login" element={<Login />} />
           <Route index path="/signup" element={<SignUp />} />
           <Route index path="*" element={<Error404 />} />

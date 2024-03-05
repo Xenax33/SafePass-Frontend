@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import "./GeneratePassword.css";
-import NavBar from "../NavBar";
+import NavBar from "./NavBar";
 
-function GeneratePassword({ onClose }) {
+function GeneratePassword() {
   const [errors, setErrors] = useState("");
   const [length, setLength] = useState(10);
-  const [password, setPassword] = useState("Hello");
+  const [password, setPassword] = useState("Press button to generate...");
   const [numbers, setNumbers] = useState(false);
   const [symbols, setSymbols] = useState(false);
   const [LowerCase, setLowerCase] = useState(false);
   const [UpperCase, setUpperCase] = useState(false);
-  const [SimiliarCharacters, setSimiliarCharacters] = useState(false);
-  const [strict, setStrict] = useState(false);
 
   const addLength = () => {
     if(length<30)
@@ -45,7 +43,7 @@ function GeneratePassword({ onClose }) {
   const generatePassword = () => {
     setErrors({});
     if (!numbers && !symbols && !LowerCase && !UpperCase) {
-      return setErrors("sdfsfsd");
+      return setPassword("Check atleast one option from checklist");
     } else if (length === 0) {
       return setErrors("Password length cannot be 0");
     } else if (length < 10) {
@@ -68,14 +66,12 @@ function GeneratePassword({ onClose }) {
       } else {
         i--;
       }
-      console.log(passsword);
     }
     setPassword(passsword);
   };
   return (
     <>
-      <NavBar />
-      <div className="Main">
+      <section className="Main">
         <div id="checklist">
           <input
             value="1"
@@ -121,19 +117,9 @@ function GeneratePassword({ onClose }) {
         <div className="Col">
           <label htmlFor="input">Select the lenght of password</label>
           <div className="Length">
-            <button className="button1 center" onClick={addLength}>
+            <button className="button1 center1" onClick={addLength}>
               {" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={15}
-                height={15}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="white"
-                  d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1"
-                ></path>
-              </svg>
+              +
             </button>
 
             <div className="input-container">
@@ -148,40 +134,30 @@ function GeneratePassword({ onClose }) {
               />
               <div className="highlight"></div>
             </div>
-            <button className="button1" onClick={subtractLength}>
+            <button className="button1 center1" onClick={subtractLength}>
               {" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={15}
-                height={15}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="white"
-                  d="M18 12.998H6a1 1 0 0 1 0-2h12a1 1 0 0 1 0 2"
-                ></path>
-              </svg>
+              -
             </button>
           </div>
-          <button className="btn Generate" onClick={generatePassword}>
+          <button className="button2 Generate" onClick={generatePassword}>
             Generate
           </button>
 
           <div className="GeneratedText">
-            <div>
+            <div className=" Generate">
               <input
                 type="text"
                 name="name"
-                className="input"
+                className="input Generate"
                 disabled={true}
                 value={password}
               />
               <div className="highlight"></div>
             </div>
-            <div class="centralize">
+            <div className="centralize">
               <div>
-                <button onClick={() => navigator.clipboard.writeText(password)}>
-                  <span>
+                <button onClick={() => navigator.clipboard.writeText(password)} >
+                  <span >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width={15}
@@ -202,7 +178,7 @@ function GeneratePassword({ onClose }) {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

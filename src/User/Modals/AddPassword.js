@@ -13,8 +13,9 @@ function AddPassword({ onClose }) {
             <h2>Add Password</h2>
           </div>
           <div className="modal-body">
-            <div className="input-container">
+            <div id="width" className="input-container">
               <input
+                id="width"
                 type="text"
                 name="name"
                 className="input"
@@ -22,8 +23,9 @@ function AddPassword({ onClose }) {
               />
               <div className="highlight"></div>
             </div>
-            <div className="input-container">
+            <div id="width" className="input-container">
               <input
+                id="width"
                 type="email"
                 name="email"
                 className="input"
@@ -32,8 +34,9 @@ function AddPassword({ onClose }) {
               />
               <div className="highlight"></div>
             </div>
-            <div className="input-container">
+            <div id="width" className="input-container">
               <input
+                id="width"
                 type="password"
                 name="password"
                 className="input"

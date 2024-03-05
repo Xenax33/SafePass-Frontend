@@ -13,6 +13,9 @@ body{
 p{
   font-size: initial;
 }
+a{
+  text-decoration: none !important;
+}
 :root {
   --Neutral-Black: #263238;
   --Neutral-D_Grey: #4d4d4d;
@@ -56,9 +59,7 @@ p{
 
 .button1:hover {
   outline: 2px solid var(--Neutral-D_Grey);
-  /* border: 2px solid var(--Neutral-D_Grey); */
   box-sizing: border-box;
-  /* padding: 7.745px 20.274px; */
 }
 
 .button1:disabled{
@@ -70,6 +71,7 @@ p{
 }
 
 .button2 {
+  text-decoration: none;
   border-radius: 2.784px;
   background-color: transparent;
   border: none;
@@ -81,7 +83,6 @@ p{
   font-style: normal;
   font-weight: 600;
   box-sizing: border-box;
-  /* border: 2px solid var(--Primary); */
   line-height: 16.706px; /* 150% */
   display: flex;
   align-items: center;
@@ -156,6 +157,7 @@ footer{
 
 nav {
   min-width: 100vw;
+  z-index: 999;
   /* position: fixed;
   background-color: var(--Neutral-White); */
 }
@@ -406,54 +408,8 @@ nav {
   animation: right 1s ease 1
 }
 
-/* The Modal */
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80vw; /* Could be more or less, depending on screen size */
-  border-radius: 15px;
-}
-
-/* Modal Header */
-.modal-header {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--Shades-S2);
-  text-align: center;
-}
-
-/* Modal Body */
-.modal-body {
-  padding: 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-  /* gap: 20px; */
-}
-
-/* Modal Footer */
-.modal-footer {
-  padding: 10px 0;
-  border-top: 1px solid var(--Shades-S2);
-}
-
 button {
-  background-color: var(--Tint-T5);
+  background-color: var(--Primary);
   width: 100px;
   height: 30px;
   border: none;
@@ -471,7 +427,7 @@ button span:first-child {
 
 button span:last-child {
   position: absolute;
-  color: var(--Tint-T5);
+  color: var(--Neutral-White);
   opacity: 0;
   transform: translateY(100%) translateX(-50%);
   height: 14px;
@@ -479,7 +435,7 @@ button span:last-child {
 }
 
 button:focus {
-  background-color: var(--Primary);
+  background-color: var(--Primary-Active);
 }
 
 button:focus span:first-child {
