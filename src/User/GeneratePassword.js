@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "./GeneratePassword.css";
-import NavBar from "./NavBar";
 
 function GeneratePassword() {
-  const [errors, setErrors] = useState("");
   const [length, setLength] = useState(10);
   const [password, setPassword] = useState("Press button to generate...");
   const [numbers, setNumbers] = useState(false);
@@ -11,9 +9,16 @@ function GeneratePassword() {
   const [LowerCase, setLowerCase] = useState(false);
   const [UpperCase, setUpperCase] = useState(false);
 
+  const copyText = () => {
+    if (password !== undefined) {
+      navigator.clipboard.writeText(password).catch(() => {
+        alert("something went wrong");
+      });
+    }
+  };
+
   const addLength = () => {
-    if(length<30)
-    {
+    if (length < 30) {
       setLength(length + 1);
     }
   };
@@ -41,15 +46,14 @@ function GeneratePassword() {
   };
 
   const generatePassword = () => {
-    setErrors({});
     if (!numbers && !symbols && !LowerCase && !UpperCase) {
       return setPassword("Check atleast one option from checklist");
     } else if (length === 0) {
-      return setErrors("Password length cannot be 0");
+      return setPassword("Password length cannot be 0");
     } else if (length < 10) {
-      return setErrors("Invalid password length");
+      return setPassword("Invalid password length");
     } else if (length >= 30) {
-      return setErrors("Password length cannot exceed 30 characters");
+      return setPassword("Password length cannot exceed 30 characters");
     }
 
     let passsword = "";
@@ -156,8 +160,8 @@ function GeneratePassword() {
             </div>
             <div className="centralize">
               <div>
-                <button onClick={() => navigator.clipboard.writeText(password)} >
-                  <span >
+                <button onClick={copyText}>
+                  <span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width={15}
