@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import MainScreen from "./User/MainScreen";
 import GeneratePassword from "./User/GeneratePassword";
 import Landing from "./User/Landing";
+import Passwords from "./User/Passwords";
 
 function App() {
   const isLoading = useSelector((state) => state.loader);
@@ -52,6 +53,7 @@ function App() {
           <Route  path="/user" element={<MainScreen />}>
             <Route index path="generatepassword" element={<GeneratePassword />} />
             <Route index path="landing" element={<Landing />} />
+            <Route index path="passwords" element={<Passwords />} />
           </Route>
           <Route index path="/login" element={<Login />} />
           <Route index path="/signup" element={<SignUp />} />

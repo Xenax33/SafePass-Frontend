@@ -36,7 +36,7 @@ function NavBar() {
             <div className="dropdown-content">
               <a onClick={handleAddPasswordClick}>Add Password</a>
               <Link to={'/user/generatepassword'}>Generate Password</Link>
-              <a >Link 3</a>
+              <Link to={'/user/passwords'}>Your Passwords</Link>
             </div>
           </li>
         </div>
