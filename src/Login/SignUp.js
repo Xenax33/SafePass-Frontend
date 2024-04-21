@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import "./Login.css";
+import axios from "axios";
 import Nav from "../Landing Page/Nav";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Recaptcha from "../Recaptcha/Recaptcha";
+import { useDispatch } from "react-redux";
+import { turnOnLoader, turnOffLoader } from "../redux/loader";
 
 function SignUp() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [captchaVerified, setCaptchaVerified] = useState(true);
   const [User, setUser] = useState({
     name: "",
@@ -13,11 +18,11 @@ function SignUp() {
   });
 
   function setCookie(name, value, expirationSeconds) {
-    const expirationDate = new Date(Date.now() + (expirationSeconds * 1000));
-  
+    const expirationDate = new Date(Date.now() + expirationSeconds * 1000);
+
     // Ensure value is a plain JavaScript object
     const jsonValue = typeof value === "object" ? JSON.stringify(value) : value;
-  
+
     // Set the cookie with encoded JSON value and expiration date
     const cookieValue =
       encodeURIComponent(jsonValue) +
@@ -26,18 +31,37 @@ function SignUp() {
       "; path=/";
     document.cookie = name + "=" + cookieValue;
   }
-  
 
-  const signUp = () => {
-    setCookie(
-      "user",
-      {
-        name: User.name,
-        email: User.email,
-        password: User.password,
-      },
-      50
-    );
+  const signUp = async () => {
+    dispatch(turnOnLoader());
+    try {
+      const data = await axios.post(
+        "http://localhost:3000/api/v1/users/register",
+        User
+      );
+      if (data.data.success === 200) {
+        setCookie(
+          "user",
+          {
+            _id: data.data.data,
+            name: User.name,
+            email: User.email,
+          },
+          3600  
+        );
+        dispatch(turnOffLoader());
+        navigate("/user/landing");
+      } else {
+        dispatch(turnOffLoader());
+        alert("There was an error. Please try again.");
+        navigate("/");
+      }
+    } catch (err) {
+      console.log(err)
+      dispatch(turnOffLoader());
+      alert("There was an error. Please try again.");
+      navigate("/");
+    }
   };
 
   const handleInputChange = (e) => {
@@ -59,7 +83,7 @@ function SignUp() {
             <h2>Create an Account</h2>
             <div className="input-container">
               <input
-                type="name"
+                type="text"
                 name="name"
                 className="input"
                 placeholder="Enter Username"

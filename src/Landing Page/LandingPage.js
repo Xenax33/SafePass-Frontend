@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Nav from "./Nav";
 import Footer from "../Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,15 +28,14 @@ function LandingPage() {
     return null;
   }
 
-  useEffect(() => {
-    // Load user data from cookie when component mounts
-    const userData = getCookie("user");
-    if(userData !== null)
-    {
-      console.log("Hello")
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Load user data from cookie when component mounts
+  //   const userData = getCookie("user");
+  //   if(userData !== null)
+  //   {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
 
   return (

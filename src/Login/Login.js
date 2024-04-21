@@ -1,50 +1,70 @@
 import React, { useState , useEffect} from "react";
 import "./Login.css";
+import axios from "axios";
 import Nav from "../Landing Page/Nav";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
 import Recaptcha from "../Recaptcha/Recaptcha";
 import { useDispatch } from "react-redux";
 import { turnOnLoader, turnOffLoader  } from "../redux/loader";
 
 function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [captchaVerified, setCaptchaVerified] = useState(true);
   const [User , setUser] = useState ({
-    name: "",
     email: "",
     password : ""
   })
 
-  function getCookie(name) {
-    const cookies = document.cookie.split(';');
-    for (const cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.split('=').map(part => part.trim());
-      if (cookieName === name) {
-        // Decode the URL-encoded value
-        const decodedValue = decodeURIComponent(cookieValue);
-        // Parse the JSON string into a JavaScript object
-        return JSON.parse(decodedValue);
-      }
-    }
-    return null;
+  function setCookie(name, value, expirationSeconds) {
+    const expirationDate = new Date(Date.now() + expirationSeconds * 1000);
+
+    // Ensure value is a plain JavaScript object
+    const jsonValue = typeof value === "object" ? JSON.stringify(value) : value;
+
+    // Set the cookie with encoded JSON value and expiration date
+    const cookieValue =
+      encodeURIComponent(jsonValue) +
+      "; expires=" +
+      expirationDate.toUTCString() +
+      "; path=/";
+    document.cookie = name + "=" + cookieValue;
   }
-  
 
-  useEffect(() => {
-    // Load user data from cookie when component mounts
-    const userData = getCookie("user");
-    setUser(userData)
-  }, []);
-  useEffect(() => {
-    console.log(User)
-  }, [User]);
+  const handleInputChange = (e) => {
+    setUser({ ...User, [e.target.name]: e.target.value });
+  };
 
-  const Login = () => {
+  const Login = async () => {
     dispatch(turnOnLoader());
-    // Perform some asynchronous task
-    setTimeout(() => {
+    try{
+      const data = await axios.post(
+        "http://localhost:3000/api/v1/users/login",
+        User
+      );
+      console.log(data);
+      if(data.data.success === 200)
+      {
+        setCookie(
+            "user",
+          {
+            _id: data.data.data._id,
+            name: data.data.data.name,
+            email: User.email,
+          },
+          3600
+        );
+        navigate("/user/landing");
+      }
       dispatch(turnOffLoader());
-    }, 2000);
+    }
+    catch(err)
+    {
+      console.log(err)
+      dispatch(turnOffLoader());
+      alert("There was an error. Please try again.");
+      navigate("/");
+    }
   };
 
   return (
@@ -63,18 +83,20 @@ function Login() {
             <div className="input-container">
               <input
                 type="email"
-                name="text"
+                name="email"
                 className="input"
                 placeholder="Enter Email"
+                onChange={handleInputChange}
               />
               <div className="highlight"></div>
             </div>
             <div className="input-container">
               <input
                 type="password"
-                name="text"
+                name="password"
                 className="input"
                 placeholder="Enter Password"
+                onChange={handleInputChange}
               />
               <div className="highlight"></div>
             </div>

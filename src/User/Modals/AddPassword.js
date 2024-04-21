@@ -1,10 +1,68 @@
-import React from "react";
+import React , {useEffect , useState} from "react";
 import "./AddPassword.css";
+import axios from "axios";
+import {useNavigate } from "react-router-dom";
 
 function AddPassword({ onClose }) {
+  const navigate = useNavigate();
+  const [User, setUser] = useState({
+    accountName: "",
+    email: "",
+    password: "",
+  });
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(";");
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie
+        .split("=")
+        .map((part) => part.trim());
+      if (cookieName === name) {
+        // Decode the URL-encoded value
+        const decodedValue = decodeURIComponent(cookieValue);
+        // Parse the JSON string into a JavaScript object
+        return JSON.parse(decodedValue);
+      }
+    }
+    return null;
+  }
+
+  const handleInputChange = (e) => {
+    setUser({ ...User, [e.target.name]: e.target.value });
+  };
   const handleClose = () => {
     onClose(); // Call the onClose function passed from props
   };
+
+  const handleSubmit = async()=>{
+    try{
+      const data = await axios.post(
+        "http://localhost:3000/api/v1/user-data/add-data",
+        User
+      );
+      console.log(data)
+    }
+    catch(err)
+    {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    // Load user data from cookie when component mounts
+    const userData = getCookie("user");
+    if(userData !== null)
+    {
+      setUser(userData);
+    }
+    else{
+      navigate('/')
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   console.log
+  // }, [User]);
   return (
     <>
       <div id="myModal" className="modal">
@@ -17,9 +75,10 @@ function AddPassword({ onClose }) {
               <input
                 id="width"
                 type="text"
-                name="name"
+                name="accountName"
                 className="input"
                 placeholder="Enter Name"
+                onChange={handleInputChange}
               />
               <div className="highlight"></div>
             </div>
@@ -31,6 +90,7 @@ function AddPassword({ onClose }) {
                 className="input"
                 placeholder="Enter Email"
                 autoComplete="off"
+                onChange={handleInputChange}
               />
               <div className="highlight"></div>
             </div>
@@ -41,12 +101,13 @@ function AddPassword({ onClose }) {
                 name="password"
                 className="input"
                 placeholder="Enter Password"
+                onChange={handleInputChange}
               />
               <div className="highlight"></div>
             </div>
           </div>
           <div className="modal-footer">
-            <button className="button1">
+            <button className="button1" onClick={handleSubmit}>
               <div className="d-flex">
                 Confirm
                 <svg
