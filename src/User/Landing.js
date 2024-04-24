@@ -35,9 +35,7 @@ function Landing() {
       navigate("/");
     }
   }, []);
-  useEffect(() => {
-    console.log(User)
-  }, [User]);
+  
   return (
     <div className="container">
       <div className="container1">

@@ -35,12 +35,21 @@ function AddPassword({ onClose }) {
   };
 
   const handleSubmit = async()=>{
+    console.log(User)
     try{
       const data = await axios.post(
         "http://localhost:3000/api/v1/user-data/add-data",
         User
       );
       console.log(data)
+      if(data.data.success === 200)
+      {
+        handleClose();
+      }
+      else{
+        alert("There was an error. Please try again");
+        handleClose();
+      }
     }
     catch(err)
     {

@@ -1,7 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Passwords.css";
+import {useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 function Passwords() {
+  const navigate = useNavigate();
+  const [User, setUser] = useState({});
+  const[Data , setData] = useState();
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(";");
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie
+        .split("=")
+        .map((part) => part.trim());
+      if (cookieName === name) {
+        // Decode the URL-encoded value
+        const decodedValue = decodeURIComponent(cookieValue);
+        // Parse the JSON string into a JavaScript object
+        return JSON.parse(decodedValue);
+      }
+    }
+    return null;
+  }
+
+  const getData = async ()=>{
+    try {
+      const data = await axios.get(
+        "http://localhost:3000/api/v1/user-data/get-data",
+      );
+      setData(data)
+    }
+    catch(er)
+    {
+      alert("There was an error. Please sign in again.")
+      console.log(er)
+      navigate("/");
+    }
+  }
+
+  useEffect(() => {
+    // Load user data from cookie when component mounts
+    const userData = getCookie("user");
+    if (userData !== null) {
+      setUser(userData);
+      getData()
+    } else {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(User);
+  }, [User]);
+  useEffect(() => {
+    console.log("Data: " + Data);
+  }, [Data]);
+
   return (
     <>
       <div className="search">
