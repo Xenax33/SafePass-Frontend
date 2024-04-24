@@ -28,7 +28,7 @@ function Passwords() {
   const getData = async ()=>{
     try {
       const data = await axios.get(
-        "http://localhost:3000/api/v1/user-data/get-data",
+        "http://localhost:8080/api/v1/user-data/get-data",
       );
       setData(data)
     }

@@ -38,7 +38,7 @@ function AddPassword({ onClose }) {
     console.log(User)
     try{
       const data = await axios.post(
-        "http://localhost:3000/api/v1/user-data/add-data",
+        "http://localhost:8080/api/v1/user-data/add-data",
         User
       );
       console.log(data)

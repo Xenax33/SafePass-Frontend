@@ -36,7 +36,7 @@ function SignUp() {
     dispatch(turnOnLoader());
     try {
       const data = await axios.post(
-        "http://localhost:3000/api/v1/users/register",
+        "http://localhost:8080/api/v1/users/register",
         User
       );
       if (data.data.success === 200) {
