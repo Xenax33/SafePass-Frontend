@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Recaptcha from "../Recaptcha/Recaptcha";
 import { useDispatch } from "react-redux";
 import { turnOnLoader, turnOffLoader } from "../redux/loader";
+import { axiosInstance } from "../User/axiosInstance";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -35,8 +36,8 @@ function SignUp() {
   const signUp = async () => {
     dispatch(turnOnLoader());
     try {
-      const data = await axios.post(
-        "http://localhost:8080/api/v1/users/register",
+      const data = await axiosInstance.post(
+        "/users/register",
         User
       );
       if (data.data.success === 200) {

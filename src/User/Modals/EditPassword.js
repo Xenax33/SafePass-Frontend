@@ -1,16 +1,12 @@
-import React , {useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./AddPassword.css";
 import axios from "axios";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axiosInstance";
 
-function AddPassword({ onClose }) {
+function EditPassword({ onClose }) {
   const navigate = useNavigate();
-  const [User, setUser] = useState({
-    accountName: "",
-    email: "",
-    password: "",
-  });
+  const [User, setUser] = useState(null);
 
   function getCookie(name) {
     const cookies = document.cookie.split(";");
@@ -19,9 +15,7 @@ function AddPassword({ onClose }) {
         .split("=")
         .map((part) => part.trim());
       if (cookieName === name) {
-        // Decode the URL-encoded value
         const decodedValue = decodeURIComponent(cookieValue);
-        // Parse the JSON string into a JavaScript object
         return JSON.parse(decodedValue);
       }
     }
@@ -30,56 +24,29 @@ function AddPassword({ onClose }) {
 
   const handleInputChange = (e) => {
     setUser({ ...User, [e.target.name]: e.target.value });
+    console.log(User);
   };
+
   const handleClose = () => {
     onClose(); // Call the onClose function passed from props
   };
 
-  const handleSubmit = async()=>{
-    console.log(User)
-    try{
-      const data = await axiosInstance.post(
-        "/user-data/add-data",
-        User
-        
-      );
-      console.log(data)
-      if(data.data.success === 200)
-      {
-        handleClose();
-      }
-      else{
-        alert("There was an error. Please try again");
-        handleClose();
-      }
-    }
-    catch(err)
-    {
-      console.log(err)
-    }
-  }
+  const handleSubmit = async () => {};
 
-  useEffect(() => {
-    // Load user data from cookie when component mounts
-    const userData = getCookie("user");
-    if(userData !== null)
-    {
-      setUser(userData);
-    }
-    else{
-      navigate('/')
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   console.log
-  // }, [User]);
+//   useEffect(() => {
+//     const userData = getCookie("user");
+//     if (userData !== null) {
+//       setUser(userData._id);
+//     } else {
+//       navigate("/");
+//     }
+//   }, []);
   return (
     <>
       <div id="myModal" className="modal">
         <div className="modal-content">
           <div className="modal-header">
-            <h2>Add Password</h2>
+            <h2>Edit Password</h2>
           </div>
           <div className="modal-body">
             <div id="width" className="input-container">
@@ -181,4 +148,4 @@ function AddPassword({ onClose }) {
   );
 }
 
-export default AddPassword;
+export default EditPassword;

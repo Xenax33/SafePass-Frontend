@@ -6,6 +6,7 @@ import { Link ,useNavigate } from "react-router-dom";
 import Recaptcha from "../Recaptcha/Recaptcha";
 import { useDispatch } from "react-redux";
 import { turnOnLoader, turnOffLoader  } from "../redux/loader";
+import { axiosInstance } from "../User/axiosInstance";
 
 function Login() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function Login() {
     email: "",
     password : ""
   })
+
 
   function setCookie(name, value, expirationSeconds) {
     const expirationDate = new Date(Date.now() + expirationSeconds * 1000);
@@ -36,11 +38,11 @@ function Login() {
   };
 
   const Login = async () => {
-    dispatch(turnOnLoader());
+    
     try{
-      const data = await axios.post(
-        "http://localhost:8080/api/v1/users/login",
-        User
+      const data = await axiosInstance.post(
+        "/users/login",
+        User,
       );
       console.log(data);
       if(data.data.success === 200)

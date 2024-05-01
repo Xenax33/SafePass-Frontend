@@ -1,13 +1,61 @@
 import React, { useEffect, useState } from "react";
 import "./Passwords.css";
-import {useNavigate } from "react-router-dom";
-import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "./axiosInstance";
+import "boxicons";
+import { turnOnLoader, turnOffLoader } from "../redux/loader";
+import EditPassword from "./Modals/EditPassword";
 
 function Passwords() {
   const navigate = useNavigate();
   const [User, setUser] = useState({});
-  const[Data , setData] = useState();
+  const [Data, setData] = useState();
+  const [Passwords, setPasswords] = useState();
+  const [searchTitle, setsearchTitle] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const onSearchChange = (e) => {
+    setsearchTitle(e.target.value);
+  };
+
+  const filterPasswordsBySearch = () => {
+    if (Data) {
+      const booksInCategory = Passwords.filter((data) => {
+        return data.accountName
+          .toLowerCase()
+          .includes(searchTitle.toLowerCase());
+      });
+      setData(booksInCategory);
+    }
+    if (searchTitle === "") {
+      setData(Passwords);
+    }
+  };
+
+  useEffect(() => {
+    filterPasswordsBySearch();
+  }, [searchTitle, Data]);
+
+  const handleEditClick = () => {
+    setShowModal(true);
+  };
+
+  const handleHeartClick = async (ID) => {
+    let _id = {
+      _id: ID,
+    };
+    console.log(_id);
+    try {
+      const data = await axiosInstance.get("/user-data/changefavourite", _id);
+      console.log(data);
+    } catch (err) {}
+  };
+  const handleDeleteClick = () => {};
 
   function getCookie(name) {
     const cookies = document.cookie.split(";");
@@ -25,42 +73,49 @@ function Passwords() {
     return null;
   }
 
-  const getData = async ()=>{
+  const getData = async () => {
     try {
-      const data = await axios.get(
-        "http://localhost:8080/api/v1/user-data/get-data",
-      );
-      setData(data)
-    }
-    catch(er)
-    {
-      alert("There was an error. Please sign in again.")
-      console.log(er)
+      const data = await axiosInstance.get("/user-data/get-data");
+      if (data.data.success === 200) {
+        console.log(data.data.data);
+        setData(data.data.data);
+        setPasswords(data.data.data);
+      } else {
+        alert("There was an error. Please sign in again.");
+        navigate("/");
+      }
+    } catch (er) {
+      alert("There was an error. Please sign in again.");
+      console.log(er);
       navigate("/");
     }
-  }
+  };
 
   useEffect(() => {
+    turnOnLoader();
     // Load user data from cookie when component mounts
     const userData = getCookie("user");
     if (userData !== null) {
       setUser(userData);
-      getData()
+      getData();
     } else {
       navigate("/");
     }
   }, []);
 
   useEffect(() => {
-    console.log(User);
-  }, [User]);
-  useEffect(() => {
-    console.log("Data: " + Data);
+    turnOffLoader();
+    console.log(Passwords);
   }, [Data]);
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <>
-      <div className="search">
+    <div id="Gradient">
+      {showModal && <EditPassword onClose={handleCloseModal} />}
+      <div className="search my-3">
         <div className="input-container">
           <input
             id="color"
@@ -68,88 +123,120 @@ function Passwords() {
             name="text"
             className="input"
             placeholder="Search..."
+            onChange={onSearchChange}
           />
           <div className="highlight"></div>
         </div>
       </div>
-      <div className="headings">
+      {/* <div className="headings">
         <h1>-IMPORTANT-</h1>
-      </div>
+        {Data &&
+          Array.isArray(Data) &&
+          Data.map((password, index) =>
+            password.important ? (
+              <div className="Card col-lg-3 col-md-4 col-sm-6">
+                <h1>{password.accountName}</h1>
+                <div className="Card__content">
+                  <p className="Card__title">Card Title</p>
+                  <p className="Card__description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            ) : null
+          )}
+      </div> */}
       <div className="headings">
         <h1>-ALL PASSWORDS-</h1>
-        <div id="Cards">
-          <div className="carD">
-            <div className="carD-inner">
-              <div className="carD-front">
-                <p>Front Side</p>
-              </div>
-              <div className="carD-back">
-                <div className="delete">
-                  <button className="Bin">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 69 14"
-                      className="svgIcon bin-top"
-                    >
-                      <g clip-path="url(#clip0_35_24)">
-                        <path
-                          fill="black"
-                          d="M20.8232 2.62734L19.9948 4.21304C19.8224 4.54309 19.4808 4.75 19.1085 4.75H4.92857C2.20246 4.75 0 6.87266 0 9.5C0 12.1273 2.20246 14.25 4.92857 14.25H64.0714C66.7975 14.25 69 12.1273 69 9.5C69 6.87266 66.7975 4.75 64.0714 4.75H49.8915C49.5192 4.75 49.1776 4.54309 49.0052 4.21305L48.1768 2.62734C47.3451 1.00938 45.6355 0 43.7719 0H25.2281C23.3645 0 21.6549 1.00938 20.8232 2.62734ZM64.0023 20.0648C64.0397 19.4882 63.5822 19 63.0044 19H5.99556C5.4178 19 4.96025 19.4882 4.99766 20.0648L8.19375 69.3203C8.44018 73.0758 11.6746 76 15.5712 76H53.4288C57.3254 76 60.5598 73.0758 60.8062 69.3203L64.0023 20.0648Z"
-                        ></path>
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_35_24">
-                          <rect fill="white" height="14" width="69"></rect>
-                        </clipPath>
-                      </defs>
-                    </svg>
+        <div id="Cards" className="row">
+          {Data &&
+            Array.isArray(Data) &&
+            Data.map((password, index) => (
+              <div className="Card col-lg-3 col-md-4 col-sm-6">
+                <h1>{password.accountName}</h1>
+                <div className="Card__content">
+                  <div className="buttons">
+                    <button className="editBtn">
+                      <box-icon
+                        name="edit-alt"
+                        animation="tada"
+                        color="#ffffff"
+                      ></box-icon>
+                    </button>
 
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 69 57"
-                      className="svgIcon bin-bottom"
+                    <button
+                      className="likeBtn"
+                      onClick={() => handleHeartClick(password._id)}
                     >
-                      <g clip-path="url(#clip0_35_22)">
-                        <path
-                          fill="black"
-                          d="M20.8232 -16.3727L19.9948 -14.787C19.8224 -14.4569 19.4808 -14.25 19.1085 -14.25H4.92857C2.20246 -14.25 0 -12.1273 0 -9.5C0 -6.8727 2.20246 -4.75 4.92857 -4.75H64.0714C66.7975 -4.75 69 -6.8727 69 -9.5C69 -12.1273 66.7975 -14.25 64.0714 -14.25H49.8915C49.5192 -14.25 49.1776 -14.4569 49.0052 -14.787L48.1768 -16.3727C47.3451 -17.9906 45.6355 -19 43.7719 -19H25.2281C23.3645 -19 21.6549 -17.9906 20.8232 -16.3727ZM64.0023 1.0648C64.0397 0.4882 63.5822 0 63.0044 0H5.99556C5.4178 0 4.96025 0.4882 4.99766 1.0648L8.19375 50.3203C8.44018 54.0758 11.6746 57 15.5712 57H53.4288C57.3254 57 60.5598 54.0758 60.8062 50.3203L64.0023 1.0648Z"
-                        ></path>
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_35_22">
-                          <rect fill="white" height="57" width="69"></rect>
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </button>
-                </div>
-                <div className="Info">
-                  <input
-                    placeholder="Enter your email"
-                    className="inpuT"
-                    name="email"
-                    type="email"
-                    disabled="true"
-                  />
-                  <button className="buTTon">Copy</button>
-                  <div className="gap"></div>
-                  <input
-                    placeholder="Enter your Password"
-                    className="inpuT"
-                    name="password"
-                    type="password"
-                    disabled="true"
-                  />
-                  <button className="buTTon">Copy</button>
+                      <box-icon
+                        name="heart"
+                        animation="tada"
+                        color="#ffffff"
+                      ></box-icon>
+                    </button>
+
+                    <button className="deleteBtn">
+                      <box-icon
+                        name="trash"
+                        animation="tada"
+                        color="#ffffff"
+                      ></box-icon>
+                    </button>
+                  </div>
+                  <p className="Card__title">
+                    <div className="Email">
+                      <div>Email: {password.email}</div>
+                      <div>
+                      <button style={{borderRadius: "2.784px" , fontSize: "11.137px"}}
+                          onClick={() => {
+                            navigator.clipboard.writeText(password.email);
+                          }}
+                        >
+                          <span>
+                            Copy
+                          </span>
+                          <span>Copied</span>
+                        </button>
+                      </div>
+                    </div>
+                  </p>
+                  <p className="Card__description">
+                    <div className="Email">
+                      <div>
+                        {showPassword
+                          ? password.password
+                          : "*".repeat(password.password.length)}
+                      </div>
+                      <div className="d-flex my-3">
+                        <button
+                          className="button1"
+                          onClick={handleTogglePassword}
+                          style={{ "margin-right": "5px" }}
+                        >
+                          {showPassword ? "Hide" : "Show"}
+                        </button>
+                        <button style={{borderRadius: "2.784px" , fontSize: "11.137px"}}
+                          onClick={() => {
+                            navigator.clipboard.writeText(password.email);
+                          }}
+                        >
+                          <span>
+                            Copy
+                          </span>
+                          <span>Copied</span>
+                        </button>
+                      </div>
+                    </div>
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
+            ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
